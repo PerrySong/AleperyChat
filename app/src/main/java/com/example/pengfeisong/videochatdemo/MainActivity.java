@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
 import com.opentok.android.PublisherKit;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements Session.SessionLi
     private static String TOKEN="T1==cGFydG5lcl9pZD00NjA4MTM1MiZzaWc9ZDdmYjJjZDJiYjFmYjZmZWEyZWI5MDg5NTVhZWM2ODRmODk0YTVhNTpzZXNzaW9uX2lkPTFfTVg0ME5qQTRNVE0xTW41LU1UVXlNVEkxTURnek16RTFNbjVPTmtoeFpWRXlha2MzYkRReFR6TjJZbVJYTUVOTFZVbC1mZyZjcmVhdGVfdGltZT0xNTIxMjUwODk2Jm5vbmNlPTAuNDU5Njg1MjI1NzEyNTA2MzYmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTUyMzg0Mjg5NSZpbml0aWFsX2xheW91dF9jbGFzc19saXN0PQ==";
     private static String LOG_TAG=MainActivity.class.getSimpleName();
     private static final int RC_SETTINGS = 123;
+    /** Autentication */
+
 
     private Session session;
 
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements Session.SessionLi
 
         PublisherContainer = (FrameLayout)findViewById(R.id.publisher_container);
         SubscriberContainer = (FrameLayout)findViewById(R.id.subscriber_container);
+        
     }
 
     @Override

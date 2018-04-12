@@ -22,9 +22,12 @@ allprojects {
         jcenter()
         maven { url 'https://maven.google.com' }
         maven { url 'https://tokbox.bintray.com/maven' }
+        maven { url "http://maven.affectiva.com" }
 
     }
 }
+
+
 
 task clean(type: Delete) {
     delete rootProject.buildDir

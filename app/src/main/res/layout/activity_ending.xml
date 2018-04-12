@@ -32,26 +32,20 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="login"
-        android:text="Login"
+        android:text="Login / Register"
         app:layout_constraintBottom_toTopOf="@+id/connect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.068" />
 
-    <Button
-        android:id="@+id/signup"
+    <TextView
+        android:id="@+id/userId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="signup"
-        android:text="Sign up"
-        app:layout_constraintBottom_toTopOf="@+id/connect"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login"
-        app:layout_constraintVertical_bias="0.0" />
+        android:text="TextView"
+        tools:layout_editor_absoluteX="151dp"
+        tools:layout_editor_absoluteY="192dp" />
+
+
 </android.support.constraint.ConstraintLayout>

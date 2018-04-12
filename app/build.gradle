@@ -18,17 +18,20 @@ android {
     }
 }
 
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.google.firebase:firebase-auth:11.8.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     compile 'com.opentok.android:opentok-android-sdk:2.13.0'
     compile 'pub.devrel:easypermissions:0.4.0'
     compile 'com.google.firebase:firebase-core:11.8.0'
+    compile 'com.google.firebase:firebase-database:11.8.0'
     /** Add authentication */
 
     compile 'com.google.firebase:firebase-auth:11.8.0'
@@ -37,7 +40,14 @@ dependencies {
     compile('com.facebook.android:facebook-android-sdk:4.27.0')
     // Required only if Twitter login support is required
     compile("com.twitter.sdk.android:twitter-core:3.0.0@aar") { transitive = true }
+
+    // Required only if Twitter login support is required
+    compile 'com.affectiva.android:affdexsdk:3.+'
+    compile group: 'com.tokbox', name: 'opentok-server-sdk', version: '2.3.2'
 }
+
+
+
 
 
 

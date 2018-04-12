@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "229582039261",
+    "firebase_url": "https://videochatdemo-f55dd.firebaseio.com",
+    "project_id": "videochatdemo-f55dd",
+    "storage_bucket": "videochatdemo-f55dd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229582039261:android:c6ee5495f7f57152",
+        "android_client_info": {
+          "package_name": "com.example.pengfeisong.videochatdemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "229582039261-3hot723n6ggduv8g5pdftockacs8ej40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrfsRrtT1msydj9gGQqoveQdu3rSdtE7E"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

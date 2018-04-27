@@ -60,7 +60,7 @@ public class MainActivity extends BaseActivity implements Session.SessionListene
         PublisherContainer = (FrameLayout)findViewById(R.id.publisher_container);
         SubscriberContainer = (FrameLayout)findViewById(R.id.subscriber_container);
 
-        
+
     }
 
 

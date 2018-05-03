@@ -6,39 +6,52 @@
     android:layout_height="match_parent"
     tools:context="com.example.pengfeisong.videochatdemo.MainActivity">
 
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="Joy level"
+        android:id="@+id/joyLevel"
+        />
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <FrameLayout
-            android:layout_width="90dp"
-            android:layout_height="120dp"
-            android:id="@+id/publisher_container"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:padding="3dp"
-            >
-        </FrameLayout>
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:id="@+id/subscriber_container"
-            >
+            android:layout_gravity="bottom|end"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
 
+            <FrameLayout
+                android:id="@+id/publisher_container"
+                android:layout_width="90dp"
+                android:layout_height="120dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:padding="3dp">
+
+                <com.affectiva.framedetectordemo.CameraView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/camera_view"/>
+
+            </FrameLayout>
 
             <Button
                 android:id="@+id/exist"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="50dp"
+                android:layout_height="100dp"
                 android:layout_gravity="top|end"
                 android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
                 android:onClick="endChat"
                 android:padding="3dp"
                 android:text="x" />
+
+
         </FrameLayout>
 
 

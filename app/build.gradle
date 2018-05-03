@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
+        multiDexEnabled true
         applicationId "com.example.pengfeisong.videochatdemo"
         minSdkVersion 16
         targetSdkVersion 26
@@ -45,6 +46,8 @@ dependencies {
     compile 'com.affectiva.android:affdexsdk:3.+'
     compile group: 'com.tokbox', name: 'opentok-server-sdk', version: '2.3.2'
 }
+
+
 
 
 

@@ -6,9 +6,13 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -25,6 +29,7 @@ import com.affectiva.android.affdex.sdk.Frame;
 import com.affectiva.android.affdex.sdk.Frame.ROTATE;
 import com.affectiva.android.affdex.sdk.detector.Face;
 import com.affectiva.android.affdex.sdk.detector.FrameDetector;
+import com.affectiva.android.affdex.sdk.detector.PhotoDetector;
 import com.example.pengfeisong.videochatdemo.model.AsyncFrameDetector;
 import com.example.pengfeisong.videochatdemo.model.CameraView;
 import com.example.pengfeisong.videochatdemo.model.FacialInfo;
@@ -117,6 +122,10 @@ public class MainActivity extends AppCompatActivity implements Session.SessionLi
      * Initialize detector
      */
     AsyncFrameDetector asyncDetector; // runs FrameDetector on a background thread
+    private final Handler mHandler = new Handler();
+
+
+
 
 
     @Override
@@ -138,11 +147,15 @@ public class MainActivity extends AppCompatActivity implements Session.SessionLi
 
 
 
-//        asyncDetector = new AsyncFrameDetector(this);
-//        asyncDetector.setOnDetectorEventListener(this);
+        asyncDetector = new AsyncFrameDetector(this);
+        asyncDetector.setOnDetectorEventListener(this);
+        asyncDetector.start();
         /*******
          *
          */
+
+
+
         mDatabase = mDatabase = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -176,52 +189,73 @@ public class MainActivity extends AppCompatActivity implements Session.SessionLi
     public void onConnected(Session session) {
 
         Log.d(LOG_TAG, "onConnected: Connected to session: "+session.getSessionId());
-
+        System.out.println("yoyoyoyoyo ");
         publisher = new Publisher.Builder(this).build();
         publisher.setPublisherListener(this);
-//
-        PublisherContainer.addView(publisher.getView());
-//
 
-        processFrame(publisher.getView());
+        View pv = publisher.getView();
+        PublisherContainer.addView(pv);
+//
+//        Runnable processFrame = new Runnable() {
+//
+//            public void run() {
+//                View view = (View) PublisherContainer;
+//                for(int i = 0; i < 20; i++) {
+//                    processFrame(view);
+//                }
+//
+//            }
+//        };
+
+//        mHandler.post(processFrame);
+
         session.publish(publisher);
     }
 
+    public static Bitmap getBitmapFromView(View view) {
+        //Define a bitmap with the same size as the view
+
+        Bitmap returnedBitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(),Bitmap.Config.ARGB_8888);
+        //Bind a canvas to it
+        Canvas canvas = new Canvas(returnedBitmap);
+        //Get the view's background
+        Drawable bgDrawable =view.getBackground();
+        if (bgDrawable!=null)
+            //has background drawable, then draw it on the canvas
+            bgDrawable.draw(canvas);
+        else
+            //does not have background drawable, then draw white background on the canvas
+            canvas.drawColor(Color.WHITE);
+        // draw the view on the canvas
+        view.draw(canvas);
+        //return the bitmap
+        return returnedBitmap;
+    }
+
     public void processFrame(View view) {
+        System.out.println("view is height is: " + view.getHeight());
         if(view != null) {
 
+//            Bitmap bitmap = null;
+            Bitmap bitmap = getBitmapFromView(view);
 
-            view.setDrawingCacheEnabled(true);
-
-            view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-
-            view.buildDrawingCache(true);
-            Bitmap bitmap = view.getDrawingCache();
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
             if(bitmap != null) {
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] frameData = baos.toByteArray();
-                int width = 640;
-                int height = 480;
+
+                Frame.BitmapFrame frame = new Frame.BitmapFrame(bitmap, Frame.COLOR_FORMAT.UNKNOWN_TYPE);
+                int width = bitmap.getWidth();
+                int height = bitmap.getHeight();
                 float timestamp = (float) SystemClock.elapsedRealtime()/1000f;
-
+                System.out.println("time stamp is : " + timestamp);
                 Frame.ROTATE rotation = Frame.ROTATE.NO_ROTATION;
+                frame.setTargetRotation(rotation);
 
-                asyncDetector.process(createFrameFromData(frameData,width,height,rotation),timestamp);
+                asyncDetector.process(frame,timestamp);
             }
 
         }
 
     }
 
-    static Frame createFrameFromData(byte[] frameData, int width, int height, Frame.ROTATE rotation) {
-        Frame.ByteArrayFrame frame = new Frame.ByteArrayFrame(frameData, width, height, Frame.COLOR_FORMAT.YUV_NV21);
-        frame.setTargetRotation(rotation);
-        return frame;
-    }
 
     @Override
     public void onDisconnected(Session session) {
@@ -233,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements Session.SessionLi
 
         if(subscriber == null) {
             subscriber = new Subscriber.Builder(this, stream).build();
+
             session.subscribe(subscriber);
             SubscriberContainer.addView(subscriber.getView());
         }
@@ -301,9 +336,10 @@ public class MainActivity extends AppCompatActivity implements Session.SessionLi
     @Override
     public void onImageResults(List<Face> faces, Frame frame, float timeStamp) {
         //1. Set the Surface View’s Layout Params with the new sizing
+
         this.joyLevel.setText("On the image result");
         if (faces == null) {
-            joyLevel.setText("Your joy level is: " + 0);
+            joyLevel.setText("Your joy level is: " + -1);
             Log.e(LOG_TAG, "onError: null face");
             return; //frame was not processed
         }
@@ -311,13 +347,13 @@ public class MainActivity extends AppCompatActivity implements Session.SessionLi
 
         //2. Check if there are any faces currently recognized.
         if (faces.size() == 0) {
-            joyLevel.setText("Your joy level is: " + 0);
+            joyLevel.setText("Your joy level is: " + -2);
             Log.e(LOG_TAG, "onError: null face");
             return; //no face found
         }
 
 
-
+        System.out.println("get in here ");
         //3. Check if there are any faces currently recognized.
         Face face = faces.get(0);
 

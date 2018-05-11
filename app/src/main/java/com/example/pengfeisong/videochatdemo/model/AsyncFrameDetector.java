@@ -234,6 +234,7 @@ public class AsyncFrameDetector {
                     startDetector();
                     break;
                 case PROCESS_FRAME:
+                    System.out.println("over here!");
                     processFrame((InputData) msg.obj);
                     break;
                 case STOP_DETECTOR:
